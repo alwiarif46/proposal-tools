@@ -157,7 +157,63 @@ body{min-height:100vh;background:var(--bg);color:var(--t1);font-family:'Outfit',
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--bdr);border-top-color:var(--orange);border-radius:50%;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(.7);cursor:pointer}
-@media(max-width:768px){.main{grid-template-columns:1fr}.upload-grid{grid-template-columns:1fr}}
+/* ===== DASHBOARD ===== */
+.dash{padding:0 28px 32px;max-width:1440px;margin:0 auto;position:relative;z-index:1}
+.dash-hero{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:24px}
+.hero-tile{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);padding:22px 26px;position:relative;overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1)}
+.hero-tile:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.3);border-color:var(--bdr2)}
+.hero-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transition:opacity .3s;opacity:.7}
+.hero-tile:hover::before{opacity:1}
+.hero-tile:nth-child(1)::before{background:var(--grad-brand)}
+.hero-tile:nth-child(2)::before{background:var(--grad-cool)}
+.hero-tile:nth-child(3)::before{background:linear-gradient(135deg,var(--teal),var(--blue))}
+.hero-num{font-family:'JetBrains Mono';font-size:36px;font-weight:800;letter-spacing:-2px;margin-bottom:2px}
+.hero-tile:nth-child(1) .hero-num{background:var(--grad-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-tile:nth-child(2) .hero-num{color:var(--purple)}
+.hero-tile:nth-child(3) .hero-num{color:var(--teal)}
+.hero-label{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.hero-sub{font-size:12px;color:var(--t2);margin-top:6px}
+
+.dash-section-title{font-size:13px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;padding-left:2px}
+
+.dash-clients{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-bottom:28px}
+.client-card{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1);cursor:pointer}
+.client-card:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.3);border-color:var(--bdr2)}
+.client-card-hdr{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr)}
+.client-card-hdr:hover{background:var(--bg3)}
+.cc-left{display:flex;align-items:center;gap:12px}
+.cc-avatar{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff;letter-spacing:-.5px;flex-shrink:0}
+.cc-name{font-size:14px;font-weight:700}
+.cc-meta{font-size:10px;color:var(--t3);margin-top:1px;font-family:'JetBrains Mono'}
+.cc-count{font-family:'JetBrains Mono';font-size:20px;font-weight:800;color:var(--orange)}
+.cc-count-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:center}
+
+.rfp-mini-list{padding:0}
+.rfp-mini{padding:11px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(30,39,68,.5);transition:all .2s;cursor:pointer}
+.rfp-mini:last-child{border-bottom:none}
+.rfp-mini:hover{background:rgba(240,122,58,.03)}
+.rfp-mini-left{flex:1;min-width:0}
+.rfp-mini-name{font-size:12px;font-weight:500;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rfp-mini-sol{font-size:10px;color:var(--t3);font-family:'JetBrains Mono';margin-top:1px}
+.rfp-mini-due{font-family:'JetBrains Mono';font-size:10px;font-weight:600;padding:3px 9px;border-radius:4px;flex-shrink:0;margin-left:10px;white-space:nowrap}
+.due-urgent{background:rgba(232,69,69,.12);color:var(--red)}
+.due-soon{background:rgba(245,166,35,.1);color:var(--amber)}
+.due-ok{background:rgba(45,212,168,.08);color:var(--teal)}
+.due-past{background:rgba(99,107,136,.1);color:var(--t3)}
+.cc-empty{padding:14px 20px;font-size:11px;color:var(--t3);text-align:center;font-style:italic}
+.cc-loading{padding:14px 20px;text-align:center}
+
+.btn-dashboard{background:rgba(240,122,58,.08);border:1px solid rgba(240,122,58,.15);color:var(--orange);padding:7px 14px;border-radius:var(--r3);font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit';transition:all .2s;display:none;align-items:center;gap:5px}
+.btn-dashboard:hover{background:var(--orange);color:#fff}
+
+.view-hidden{display:none!important}
+
+/* stagger animation */
+@keyframes tileIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.tile-anim{animation:tileIn .35s cubic-bezier(.4,0,.2,1) both}
+
+@media(max-width:1024px){.dash-hero{grid-template-columns:1fr 1fr}.dash-clients{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.main{grid-template-columns:1fr}.upload-grid{grid-template-columns:1fr}.dash-hero{grid-template-columns:1fr}.dash-clients{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -188,10 +244,18 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(.7);cursor:p
     <div class="hdr-right">
       <div class="user-info"><div class="user-name" id="user-name"></div><div class="user-email" id="user-email"></div></div>
       <button class="btn-sm" onclick="showCodesModal()">&#x2699;&#xFE0F; Codes</button>
+      <button class="btn-dashboard" id="btn-back-dash" onclick="showDashboard()">&#x2190; Dashboard</button>
       <button class="btn-sm" onclick="signOut()">Sign out</button>
     </div>
   </div>
-  <div class="main">
+  <!-- DASHBOARD VIEW -->
+  <div id="dashboard-view" class="dash">
+    <div id="dash-hero" class="dash-hero"></div>
+    <div class="dash-section-title">Clients &amp; Active Proposals</div>
+    <div id="dash-clients" class="dash-clients"><div style="text-align:center;padding:40px"><div class="spinner"></div><p style="color:var(--t3);font-size:12px;margin-top:10px">Loading clients...</p></div></div>
+  </div>
+  <!-- FILE MANAGER VIEW -->
+  <div class="main view-hidden" id="main-view">
     <div><div class="sidebar-panel">
       <div class="sidebar-title">Clients <button class="btn-new" onclick="showNewClientModal()">+ New</button></div>
       <div id="client-list"><div style="text-align:center;padding:20px"><div class="spinner"></div></div></div>
@@ -324,8 +388,94 @@ function saveCodeRegistry(){
 
 function loadClients(){
   return gGet('/drives/'+driveId+'/root:/'+C.rootFolder+':/children?$filter=folder ne null&$orderby=name').then(function(r){
-    clients=r.value.filter(function(i){return i.folder}).map(function(i){return{name:i.name,id:i.id}});renderClients();
-  }).catch(function(e){if(e.message&&e.message.indexOf('itemNotFound')>-1){clients=[];renderClients()}else{document.getElementById('client-list').innerHTML='<p style="color:var(--red);font-size:12px">Error: '+e.message+'</p>'}});
+    clients=r.value.filter(function(i){return i.folder}).map(function(i){return{name:i.name,id:i.id}});
+    renderClients();loadAllProposalsForDashboard();
+  }).catch(function(e){if(e.message&&e.message.indexOf('itemNotFound')>-1){clients=[];renderClients();renderDashboard()}else{document.getElementById('client-list').innerHTML='<p style="color:var(--red);font-size:12px">Error: '+e.message+'</p>'}});
+}
+
+// Dashboard: load all proposals for every client
+var dashLoading=0;
+function loadAllProposalsForDashboard(){
+  dashLoading=clients.length;
+  if(!clients.length){renderDashboard();return}
+  clients.forEach(function(c,i){
+    gGet('/drives/'+driveId+'/root:/'+C.rootFolder+'/'+ep(c.name)+':/children?$filter=folder ne null&$orderby=name').then(function(r){
+      c.proposals=r.value.filter(function(x){return x.folder}).map(function(x){return{name:x.name,id:x.id}});
+    }).catch(function(){c.proposals=[]}).then(function(){dashLoading--;if(dashLoading<=0)renderDashboard()});
+  });
+}
+
+var CARD_COLORS=['#e84545','#f07a3a','#f5a623','#a855f7','#4b7bf5','#2dd4a8','#38bdf8','#ec4899','#10b981','#f59e0b','#6366f1','#14b8a6'];
+function cardColor(idx){return CARD_COLORS[idx%CARD_COLORS.length]}
+
+function parsePropName(n){var m=n.match(/^(\w+)\s*-\s*(\w+)-(.+?)\s*-\s*(.+?)\s*-\s*Due\s*(.+)$/);return m?{agency:m[1],type:m[2],sol:m[3].trim(),project:m[4].trim(),due:m[5].trim()}:{agency:'',type:'',sol:'',project:n,due:''}}
+function dueDaysLeft(d){if(!d)return 999;try{var t=new Date(d),now=new Date();return Math.ceil((t-now)/(1000*60*60*24))}catch(e){return 999}}
+function dueClass(d){var dl=dueDaysLeft(d);return dl<0?'due-past':dl<=3?'due-urgent':dl<=10?'due-soon':'due-ok'}
+function dueLabel(d){var dl=dueDaysLeft(d);if(dl<0)return'Passed';if(dl===0)return'Today';if(dl===1)return'Tomorrow';return dl+'d left'}
+
+function renderDashboard(){
+  var totalRfps=0,totalClients=clients.length,rfpsByClient={};
+  clients.forEach(function(c){var n=(c.proposals||[]).length;totalRfps+=n;rfpsByClient[c.name]=n});
+  // Hero tiles
+  var heroH='<div class="hero-tile tile-anim" style="animation-delay:.05s"><div class="hero-num">'+totalRfps+'</div><div class="hero-label">Total Active RFPs</div><div class="hero-sub">across '+totalClients+' client'+(totalClients!==1?'s':'')+'</div></div>';
+  heroH+='<div class="hero-tile tile-anim" style="animation-delay:.12s"><div class="hero-num">'+totalClients+'</div><div class="hero-label">Clients</div><div class="hero-sub">'+codeRegistry.length+' code'+(codeRegistry.length!==1?'s':'')+' registered</div></div>';
+  var nearDue=0;clients.forEach(function(c){(c.proposals||[]).forEach(function(p){var info=parsePropName(p.name);if(info.due&&dueDaysLeft(info.due)<=7&&dueDaysLeft(info.due)>=0)nearDue++})});
+  heroH+='<div class="hero-tile tile-anim" style="animation-delay:.19s"><div class="hero-num">'+nearDue+'</div><div class="hero-label">Due This Week</div><div class="hero-sub">proposals needing attention</div></div>';
+  document.getElementById('dash-hero').innerHTML=heroH;
+
+  // Client cards
+  var ch='';
+  if(!clients.length){ch='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--t3)"><p style="font-size:14px">No clients yet.</p><p style="font-size:12px;margin-top:6px">Click <strong>+ New</strong> in the file manager sidebar to create your first client.</p></div>'}
+  clients.forEach(function(c,ci){
+    var props=c.proposals||[],delay=(.08*(ci+1)).toFixed(2);
+    ch+='<div class="client-card tile-anim" style="animation-delay:'+delay+'s" data-dash-client="'+ci+'">';
+    ch+='<div class="client-card-hdr" onclick="dashSelectClient('+ci+')">';
+    ch+='<div class="cc-left"><div class="cc-avatar" style="background:'+cardColor(ci)+'">'+c.name.substring(0,2).toUpperCase()+'</div><div><div class="cc-name">'+c.name+'</div><div class="cc-meta">'+props.length+' proposal'+(props.length!==1?'s':'')+'</div></div></div>';
+    ch+='<div style="text-align:center"><div class="cc-count">'+props.length+'</div><div class="cc-count-label">RFPs</div></div>';
+    ch+='</div>';
+    if(props.length){
+      ch+='<div class="rfp-mini-list">';
+      props.forEach(function(p,pi){
+        var info=parsePropName(p.name);
+        var dc=info.due?dueClass(info.due):'due-ok';
+        var dl=info.due?dueLabel(info.due):'—';
+        ch+='<div class="rfp-mini" onclick="dashSelectProposal('+ci+','+pi+')">';
+        ch+='<div class="rfp-mini-left"><div class="rfp-mini-name">'+(info.project||p.name)+'</div>';
+        var solInfo='';if(info.agency)solInfo+=info.agency;if(info.type)solInfo+=(solInfo?' · ':'')+info.type;if(info.sol)solInfo+=(solInfo?' · ':'')+info.sol;
+        if(solInfo)ch+='<div class="rfp-mini-sol">'+solInfo+'</div>';
+        ch+='</div>';
+        if(info.due)ch+='<div class="rfp-mini-due '+dc+'">'+dl+'</div>';
+        ch+='</div>';
+      });
+      ch+='</div>';
+    }else{ch+='<div class="cc-empty">No proposals yet — click to add one</div>'}
+    ch+='</div>';
+  });
+  document.getElementById('dash-clients').innerHTML=ch;
+}
+
+function showDashboard(){
+  selClient=null;selProposal=null;
+  document.getElementById('dashboard-view').classList.remove('view-hidden');
+  document.getElementById('main-view').classList.add('view-hidden');
+  document.getElementById('btn-back-dash').style.display='none';
+  renderDashboard();
+}
+function showFileManager(){
+  document.getElementById('dashboard-view').classList.add('view-hidden');
+  document.getElementById('main-view').classList.remove('view-hidden');
+  document.getElementById('btn-back-dash').style.display='flex';
+}
+function dashSelectClient(idx){
+  showFileManager();selectClient(idx);
+}
+function dashSelectProposal(cidx,pidx){
+  showFileManager();
+  var c=clients[cidx];if(!c)return;selClient=c;
+  if(!c.proposals||!c.proposals[pidx]){selectClient(cidx);return}
+  selProposal=c.proposals[pidx];pFiles={};viewCollapsed=false;
+  renderClients();document.getElementById('welcome-msg').style.display='none';document.getElementById('proposal-view').style.display='block';
+  renderProposalView();loadExistingFiles();
 }
 
 function renderClients(){
@@ -359,6 +509,7 @@ document.getElementById('client-list').addEventListener('click',function(e){
 
 function selectClient(idx){
   var c=clients[idx];if(!c)return;selClient=c;selProposal=null;
+  showFileManager();
   document.getElementById('welcome-msg').style.display='flex';document.getElementById('proposal-view').style.display='none';
   gGet('/drives/'+driveId+'/root:/'+C.rootFolder+'/'+ep(c.name)+':/children?$filter=folder ne null&$orderby=name').then(function(r){
     c.proposals=r.value.filter(function(i){return i.folder}).map(function(i){return{name:i.name,id:i.id}});
@@ -368,6 +519,7 @@ function selectClient(idx){
 function selectProposal(cidx,pidx){
   var c=clients[cidx];if(!c)return;selClient=c;
   var p=c.proposals[pidx];if(!p)return;selProposal=p;pFiles={};viewCollapsed=false;
+  showFileManager();
   renderClients();document.getElementById('welcome-msg').style.display='none';document.getElementById('proposal-view').style.display='block';
   renderProposalView();loadExistingFiles();
 }
