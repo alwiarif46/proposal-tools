@@ -158,9 +158,9 @@
 <div id="modal-codes" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeModals()">
   <div class="modal" style="width:540px">
     <h3>&#x2699;&#xFE0F; Client Code Registry</h3>
-    <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px">Only you see this. Team members only see the codes.</p>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px" id="codes-desc">Client codes for folder naming.</p>
     <div id="codes-list" style="max-height:300px;overflow-y:auto;margin-bottom:16px"></div>
-    <div style="border-top:1px solid var(--border);padding-top:14px">
+    <div id="codes-add-section" style="border-top:1px solid var(--border);padding-top:14px">
       <label class="form-label">Add New Entry</label>
       <div style="display:flex;gap:8px;align-items:center">
         <input class="form-input" id="ce-name" placeholder="Client name (private)" style="flex:1">
@@ -211,7 +211,9 @@ var FOLDERS=[
   {id:'submission',num:'10',name:'Submission Files',subs:[],icon:'\u{1F680}'}
 ];
 
-var M,AT,siteId,driveId,clients=[],selClient=null,selProposal=null,pFiles={},viewCollapsed=false,codeRegistry=[];
+var ADMINS=['arifalwi@shaavir.onmicrosoft.com','graphics@shaavir.onmicrosoft.com','info@shaavir.onmicrosoft.com','ubaid@shaavir.onmicrosoft.com'];
+var M,AT,siteId,driveId,clients=[],selClient=null,selProposal=null,pFiles={},viewCollapsed=false,codeRegistry=[],currentUserEmail='';
+function isAdmin(){return ADMINS.indexOf(currentUserEmail.toLowerCase())>-1;}
 
 // ===== INIT (wait for MSAL to load) =====
 function initMSAL(){
@@ -228,6 +230,7 @@ function signOut(){if(M)M.logoutPopup();}
 function getToken(){var a=M.getAllAccounts();if(!a.length)return Promise.reject('Not signed in');return M.acquireTokenSilent({scopes:C.scopes,account:a[0]}).catch(function(){return M.acquireTokenPopup({scopes:C.scopes})}).then(function(r){AT=r.accessToken;return AT});}
 
 function initApp(acct){
+  currentUserEmail=(acct.username||'').toLowerCase();
   document.getElementById('auth-screen').style.display='none';document.getElementById('app').style.display='block';
   document.getElementById('user-name').textContent=acct.name||acct.username;document.getElementById('user-email').textContent=acct.username;
   getToken().then(getSiteAndDrive).then(loadCodeRegistry).then(loadClients).catch(function(e){showStatus('error','Setup failed: '+e.message)});
@@ -329,18 +332,27 @@ function createClient(){
 }
 
 // ===== CODES MODAL =====
-function showCodesModal(){document.getElementById('ce-name').value='';document.getElementById('ce-code').value='';document.getElementById('modal-codes').style.display='flex';renderCodesList()}
+function showCodesModal(){document.getElementById('ce-name').value='';document.getElementById('ce-code').value='';document.getElementById('modal-codes').style.display='flex';
+  document.getElementById('codes-add-section').style.display=isAdmin()?'block':'none';
+  document.getElementById('codes-desc').textContent=isAdmin()?'Only you see client names. Team members only see the codes.':'These are the client codes used for folder naming.';
+  renderCodesList()}
 function renderCodesList(){
   var el=document.getElementById('codes-list');
-  if(!codeRegistry.length){el.innerHTML='<p style="color:var(--text-dim);font-size:12px;text-align:center;padding:16px">No codes yet. Add your first one below.</p>';return}
-  var h='';
+  if(!codeRegistry.length){el.innerHTML='<p style="color:var(--text-dim);font-size:12px;text-align:center;padding:16px">No codes yet.'+(isAdmin()?' Add your first one below.':'')+'</p>';return}
+  var h='';var admin=isAdmin();
   for(var i=0;i<codeRegistry.length;i++){
-    h+='<div class="code-entry"><span class="ce-label">'+codeRegistry[i].name+'</span><span class="ce-code">'+codeRegistry[i].code+'</span><button class="ce-del" data-delidx="'+i+'" title="Delete">&times;</button></div>';
+    if(admin){
+      h+='<div class="code-entry"><span class="ce-label">'+codeRegistry[i].name+'</span><span class="ce-code">'+codeRegistry[i].code+'</span><button class="ce-del" data-delidx="'+i+'" title="Delete">&times;</button></div>';
+    }else{
+      h+='<div class="code-entry"><span class="ce-code" style="margin:0">'+codeRegistry[i].code+'</span></div>';
+    }
   }
   el.innerHTML=h;
-  el.querySelectorAll('[data-delidx]').forEach(function(btn){
-    btn.addEventListener('click',function(){deleteCodeEntry(parseInt(btn.getAttribute('data-delidx')))});
-  });
+  if(admin){
+    el.querySelectorAll('[data-delidx]').forEach(function(btn){
+      btn.addEventListener('click',function(){deleteCodeEntry(parseInt(btn.getAttribute('data-delidx')))});
+    });
+  }
 }
 function addCodeEntry(){
   var name=document.getElementById('ce-name').value.trim(),code=document.getElementById('ce-code').value.trim();
